@@ -15,6 +15,8 @@ public class Room : MonoBehaviour
             return;
 
         }
+
+        RoomController.instance.RegisterRoom(this);
     }
     private void OnDrawGizmos()
     {
