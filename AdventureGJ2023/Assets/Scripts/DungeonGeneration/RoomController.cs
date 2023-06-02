@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;  
-public class RoomInfo 
+using UnityEngine.SceneManagement;
+public class RoomInfo
 {
-        public string name;
-        public int X, Y;
+    public string name;
+    public int X, Y;
 }
-   
+
 public class RoomController : MonoBehaviour
 {
 
@@ -22,14 +22,14 @@ public class RoomController : MonoBehaviour
     public List<Room> loadedRooms = new List<Room>();
 
     bool isLoadingRoom = false;
-  
+
     void Awake()
     {
         instance = this;
 
     }
-     void Start()
-    { 
+    void Start()
+    {
         LoadRoom("Start", 0, 0);
         LoadRoom("Empty", 1, 0);
         LoadRoom("Empty", -1, 0);
@@ -37,12 +37,12 @@ public class RoomController : MonoBehaviour
         LoadRoom("Empty", 0, -1);
 
     }
-     void Update()
+    void Update()
     {
         UpdateRoomQueue();
     }
 
-    void UpdateRoomQueue() 
+    void UpdateRoomQueue()
     {
         if (isLoadingRoom)
         {
@@ -58,9 +58,9 @@ public class RoomController : MonoBehaviour
 
         StartCoroutine(loadRoomRoutine(currentLoadRoomData));
     }
-    public void LoadRoom(string name, int x, int y) 
+    public void LoadRoom(string name, int x, int y)
     {
-        if (DoesRoomExist(x,y))
+        if (DoesRoomExist(x, y))
         {
             return;
         }
@@ -72,11 +72,11 @@ public class RoomController : MonoBehaviour
         loadRoomQueue.Enqueue(newRoomData);
     }
 
-    IEnumerator loadRoomRoutine (RoomInfo info)
+    IEnumerator loadRoomRoutine(RoomInfo info)
     {
         string roomName = currentWorldName + info.name;
 
-        AsyncOperation loadRoom = SceneManager.LoadSceneAsync(roomName,LoadSceneMode.Additive);
+        AsyncOperation loadRoom = SceneManager.LoadSceneAsync(roomName, LoadSceneMode.Additive);
 
         while (loadRoom.isDone == false)
         {
@@ -84,16 +84,16 @@ public class RoomController : MonoBehaviour
         }
     }
 
-    public void RegisterRoom(Room room) 
+    public void RegisterRoom(Room room)
     {
-        room.transform.position = new Vector3 (
+        room.transform.position = new Vector3(
         currentLoadRoomData.X * room.Width,
-        currentLoadRoomData.Y * room.Height,0
+        currentLoadRoomData.Y * room.Height, 0
         );
 
         room.X = currentLoadRoomData.X;
         room.Y = currentLoadRoomData.Y;
-        room.name = currentWorldName +"-"+ currentLoadRoomData.name + " " + room.X + ", " + room.Y;
+        room.name = currentWorldName + "-" + currentLoadRoomData.name + " " + room.X + ", " + room.Y;
         room.transform.parent = transform;
 
         isLoadingRoom = false;
