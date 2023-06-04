@@ -4,7 +4,7 @@ public class Player : MonoBehaviour
 {
 
     public float speed;
-    Rigidbody2D rigidbody;
+    Rigidbody2D rb;
     public GameObject bulletPrefab;
     public float bulletSpeed;
     public float fireDelay;
@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void FixedUpdate()
@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
             lastFire = Time.time;
         }
 
-        rigidbody.velocity = new Vector2(horizontal * speed, vertical * speed);
+        rb.velocity = new Vector2(horizontal * speed, vertical * speed);
     }
 
     void Shoot(float x, float y)
