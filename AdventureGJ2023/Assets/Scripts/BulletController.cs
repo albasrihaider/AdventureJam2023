@@ -23,6 +23,7 @@ public class BulletController : MonoBehaviour
         if(col.tag == "Enemy")
         {
             col.gameObject.GetComponent<EnemyController>().Death();
+            Destroy(gameObject);
             Debug.Log("DIE");
         }
     }
