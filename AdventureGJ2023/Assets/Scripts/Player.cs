@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+        fireDelay = GameController.FireRate;
+        speed = GameController.MoveSpeed;
         //SV is shoot vertical and SH is shoot horizontal
 
         float horizontal = Input.GetAxis("Horizontal");
