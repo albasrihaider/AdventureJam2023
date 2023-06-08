@@ -10,21 +10,33 @@ public enum EnemyState
     Attack
 };
 
+public enum EnemyType 
+{
+    Melee,
+    Ranged
+
+};
+
+
+
 public class EnemyController : MonoBehaviour
 {
 
     GameObject player;
     
     public EnemyState currState = EnemyState.Wander;
+    public EnemyType enemyType;
     public float range;
     public float speed;
     private bool chooseDir = false;
     private bool dead = false;
     private Vector3 randomDir;
     public float attackRange;
+    public float bulletSpeed;
     public float coolDown;
     public int damage;
     private bool coolDownAttack = false;
+    public GameObject bulletPrefab;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -99,16 +111,33 @@ public class EnemyController : MonoBehaviour
     public void Death()
     {
         Destroy(gameObject);
-        Debug.Log("DIE 2");
+       // Debug.Log("DIE 2");
     }
 
     void Attack() 
     {
         if (!coolDownAttack)
         {
+
+            switch (enemyType)
+            {
+                case EnemyType.Melee:
+                    GameController.DamagePlayer(1);
+                    StartCoroutine(CoolDown());
+                    break;
+                case EnemyType.Ranged:
+                    GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity) as GameObject;
+                    bullet.GetComponent<BulletController>().speed = bulletSpeed;
+                    bullet.GetComponent<BulletController>().GetPlayer(player.transform);
+                    bullet.AddComponent<Rigidbody2D>().gravityScale = 0;
+                    bullet.GetComponent<BulletController>().isEnemyBullet = true;
+                    StartCoroutine(CoolDown());
+                    break;
+                default:
+                    break;
+            }
             // GameController.DamagePlayer(damage); 
-               GameController.DamagePlayer(1);
-            StartCoroutine(CoolDown());
+          
         }
        
     }
