@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using System;
+
 public class RoomInfo
 {
     public string name;
@@ -65,7 +67,7 @@ public class RoomController : MonoBehaviour
                 {
                     room.RemoveUnconnectedDoors();
                 }
-               
+                UpdateRooms();
                 updatedRooms = true;
 
             }
@@ -164,6 +166,43 @@ public class RoomController : MonoBehaviour
     {
         CameraController.instance.currRoom = room;
         currRoom = room;
+
+        UpdateRooms();
+    }
+
+    private void UpdateRooms()
+    {
+        foreach (Room room in loadedRooms)
+        {
+            if (currRoom != room)
+            {
+                EnemyController[] enemies = room.GetComponentsInChildren<EnemyController>();
+
+                if (enemies != null)
+                {
+                    foreach (EnemyController enemy in enemies)
+                    {
+                        enemy.notInRoom = true;
+                    }
+
+                    //foreach (Door door in room.GetComponentsInChildren<Door>())
+                    //{
+                    //   door.doorCollider.SetActive(false);
+                    //}
+                }
+            }
+            else 
+            {
+                EnemyController[] enemies = room.GetComponentsInChildren<EnemyController>();
+                if (enemies.Length > 0)
+                {
+                    foreach (EnemyController enemy in enemies)
+                    {
+                        enemy.notInRoom = false;
+                    }
+                }
+            }
+        }
     }
 
     public string GetRandomRoomName()
@@ -173,7 +212,7 @@ public class RoomController : MonoBehaviour
         "Basic1"
         };
 
-        return possibleRooms[Random.Range(0, possibleRooms.Length)];
+        return possibleRooms[UnityEngine.Random.Range(0, possibleRooms.Length)];
 
     }
 }

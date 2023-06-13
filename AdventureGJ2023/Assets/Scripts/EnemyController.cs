@@ -4,13 +4,14 @@ using UnityEngine;
 
 public enum EnemyState
 {
+    Idle,
     Wander,
     Follow,
     Die,
     Attack
 };
 
-public enum EnemyType 
+public enum EnemyType
 {
     Melee,
     Ranged
@@ -23,8 +24,8 @@ public class EnemyController : MonoBehaviour
 {
 
     GameObject player;
-    
-    public EnemyState currState = EnemyState.Wander;
+
+    public EnemyState currState = EnemyState.Idle;
     public EnemyType enemyType;
     public float range;
     public float speed;
@@ -37,6 +38,8 @@ public class EnemyController : MonoBehaviour
     public int damage;
     private bool coolDownAttack = false;
     public GameObject bulletPrefab;
+    public bool notInRoom = false;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -44,33 +47,45 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        switch(currState)
+        switch (currState)
         {
+            //case (EnemyState.Idle):
+            //    Idle();
+            //    break;
             case (EnemyState.Wander):
                 Wander();
-            break;
+                break;
             case (EnemyState.Follow):
                 Follow();
-            break;
-            case (EnemyState.Die):  
-            break;
+                break;
+            case (EnemyState.Die):
+                break;
             case (EnemyState.Attack):
                 Attack();
                 break;
         }
 
-        if(IsPlayerInRange(range) && currState != EnemyState.Die)
-        {
-            currState = EnemyState.Follow;
-        }
-        else if(!IsPlayerInRange(range) && currState != EnemyState.Die)
-        {
-            currState = EnemyState.Wander;
-        }
 
-        if (Vector3.Distance(transform.position,player.transform.position)<= attackRange)
+        if (!notInRoom)
         {
-            currState = EnemyState.Attack;
+
+            if (IsPlayerInRange(range) && currState != EnemyState.Die)
+            {
+                currState = EnemyState.Follow;
+            }
+            else if (!IsPlayerInRange(range) && currState != EnemyState.Die)
+            {
+                currState = EnemyState.Wander;
+            }
+
+            if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
+            {
+                currState = EnemyState.Attack;
+            }
+        }
+        else
+        {
+            currState = EnemyState.Idle;
         }
     }
 
@@ -91,13 +106,13 @@ public class EnemyController : MonoBehaviour
 
     void Wander()
     {
-        if(!chooseDir)
+        if (!chooseDir)
         {
             StartCoroutine(ChooseDirection());
         }
 
         transform.position += -transform.right * speed * Time.deltaTime;
-        if(IsPlayerInRange(range))      
+        if (IsPlayerInRange(range))
         {
             currState = EnemyState.Follow;
         }
@@ -111,10 +126,10 @@ public class EnemyController : MonoBehaviour
     public void Death()
     {
         Destroy(gameObject);
-       // Debug.Log("DIE 2");
+        // Debug.Log("DIE 2");
     }
 
-    void Attack() 
+    void Attack()
     {
         if (!coolDownAttack)
         {
@@ -137,11 +152,11 @@ public class EnemyController : MonoBehaviour
                     break;
             }
             // GameController.DamagePlayer(damage); 
-          
+
         }
-       
+
     }
-    private IEnumerator CoolDown() 
+    private IEnumerator CoolDown()
     {
         coolDownAttack = true;
         yield return new WaitForSeconds(coolDown);
