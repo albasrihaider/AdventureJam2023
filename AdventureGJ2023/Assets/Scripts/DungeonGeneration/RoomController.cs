@@ -165,4 +165,15 @@ public class RoomController : MonoBehaviour
         CameraController.instance.currRoom = room;
         currRoom = room;
     }
+
+    public string GetRandomRoomName()
+    {
+        string[] possibleRooms = new string[] { 
+        "Empty",
+        "Basic1"
+        };
+
+        return possibleRooms[Random.Range(0, possibleRooms.Length)];
+
+    }
 }

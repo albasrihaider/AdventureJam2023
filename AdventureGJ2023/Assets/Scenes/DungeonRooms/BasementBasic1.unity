@@ -224,8 +224,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grid: {fileID: 714970196}
   spawners:
-  - name: Chasers
-    spawnerData: {fileID: 11400000, guid: e79e44dfc9583c94aa4e098abc5599a3, type: 2}
+  - name: Ranged
+    spawnerData: {fileID: 11400000, guid: 899d5b68dbe84594ab9953489c5e5afe, type: 2}
 --- !u!1 &354658676
 GameObject:
   m_ObjectHideFlags: 0
