@@ -167,31 +167,51 @@ public class RoomController : MonoBehaviour
         CameraController.instance.currRoom = room;
         currRoom = room;
 
-        UpdateRooms();
+        StartCoroutine(RoomCoroutine());
     }
 
-    private void UpdateRooms()
+    public IEnumerator RoomCoroutine()
+    {
+        yield return new WaitForSeconds(.2f);
+        UpdateRooms();      
+        
+    }
+
+    public void UpdateRooms()
     {
         foreach (Room room in loadedRooms)
         {
             if (currRoom != room)
             {
                 EnemyController[] enemies = room.GetComponentsInChildren<EnemyController>();
-
                 if (enemies != null)
                 {
                     foreach (EnemyController enemy in enemies)
                     {
                         enemy.notInRoom = true;
+                        Debug.Log("Not in room");
                     }
 
-                    //foreach (Door door in room.GetComponentsInChildren<Door>())
-                    //{
-                    //   door.doorCollider.SetActive(false);
-                    //}
+                    foreach (Door door in room.GetComponentsInChildren<Door>())
+                    {
+                        if (door.doorCollider != null)
+                        {
+                            door.doorCollider.SetActive(false);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (Door door in room.GetComponentsInChildren<Door>())
+                    {
+                        if (door.doorCollider != null)
+                        {
+                            door.doorCollider.SetActive(false);
+                        }
+                    }
                 }
             }
-            else 
+            else
             {
                 EnemyController[] enemies = room.GetComponentsInChildren<EnemyController>();
                 if (enemies.Length > 0)
@@ -199,6 +219,26 @@ public class RoomController : MonoBehaviour
                     foreach (EnemyController enemy in enemies)
                     {
                         enemy.notInRoom = false;
+                        Debug.Log("In room");
+                    }
+                    
+                    foreach (Door door in room.GetComponentsInChildren<Door>())
+                    {
+                        if (door.doorCollider != null)
+                        {
+                            door.doorCollider.SetActive(true);
+                        }
+                        
+                    }
+                }
+                else
+                {
+                    foreach (Door door in room.GetComponentsInChildren<Door>())
+                    {
+                        if (door.doorCollider != null)
+                        {
+                            door.doorCollider.SetActive(false);
+                        }
                     }
                 }
             }
@@ -208,8 +248,8 @@ public class RoomController : MonoBehaviour
     public string GetRandomRoomName()
     {
         string[] possibleRooms = new string[] { 
-        "Empty",
-        "Basic1"
+        "Empty"
+       // ,"Basic1"
         };
 
         return possibleRooms[UnityEngine.Random.Range(0, possibleRooms.Length)];

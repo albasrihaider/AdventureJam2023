@@ -440,6 +440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorType: 2
+  doorCollider: {fileID: 0}
 --- !u!1 &672087142
 GameObject:
   m_ObjectHideFlags: 0
@@ -706,6 +707,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorType: 1
+  doorCollider: {fileID: 0}
 --- !u!1 &905474912
 GameObject:
   m_ObjectHideFlags: 0
@@ -1039,6 +1041,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorType: 3
+  doorCollider: {fileID: 0}
 --- !u!1 &1417788152
 GameObject:
   m_ObjectHideFlags: 0
@@ -1169,3 +1172,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorType: 0
+  doorCollider: {fileID: 0}
